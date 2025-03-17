@@ -19,8 +19,8 @@ pipeline
                 script 
                 {
                     // Build the Docker image
-                    sh 'docker build -t sarithaladella/index .'
-                    sh 'docker build -t sarithaladella/resume .'
+                    sh 'docker build -t sladella91/home home'
+                    sh 'docker build -t sladella91/resume resume'
                 }
             }
         }
@@ -34,13 +34,27 @@ pipeline
                     withCredentials([usernamePassword(credentialsId: 'key', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
                         // Login to Docker Hub
                         sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
-
+                        
                         // Push the Docker image to Docker Hub
-                        sh 'docker push sarithaladella/index'
-                        sh 'docker push sarithaladella/resume'
+                        sh 'docker push sladella91/home'
+                        sh 'docker push sladella91/resume'
+            
                     }
                 }
             }
+        }
+
+          stage('Deploy to EC2 instance') {
+            steps {
+                script {
+                    sshagent(credentials: ['host-key']) {
+                        sh '''
+                        ssh -o StrictHostKeyChecking=no ec2-user@34.224.102.128 "sudo docker pull sladella91/home && sudo docker run -d -p 3000:3000 sladella91/home"
+                        ssh -o StrictHostKeyChecking=no ec2-user@34.224.102.128 "sudo docker pull sladella91/resume && sudo docker run -d -p 5000:5000 sladella91/resume"
+                        '''
+                    }      
+                }   
+            }              
         }
 
     }

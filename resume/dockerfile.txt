@@ -1,0 +1,14 @@
+# uses the latest official Nginx Docker image as the base image
+FROM nginx:latest
+
+# Copies HTML files from your local machine into
+COPY package.json /app/portfolio/
+COPY resume.js /app/portfolio/
+
+WORKDIR /app/portfolio/
+
+RUN npm install
+
+# Start Nginx when the container runs
+# starts Nginx in the foreground
+ENTRYPOINT ["nginx", "resume.js"]
