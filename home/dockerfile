@@ -23,7 +23,7 @@ WORKDIR /app/portfolio/
 COPY --from=build /app/portfolio/ /app/portfolio/
 
 # Expose port 1000 (or whichever port your app runs on)
-EXPOSE 1000
+#EXPOSE 1000
 
 # Start the app (adjust based on your entry point)
 CMD ["node", "home.js"]
