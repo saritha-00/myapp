@@ -11,18 +11,21 @@ RUN npm install
 # Copy the rest of the application files
 COPY . /app/portfolio/
 
-# Build the app (assuming it's a React/Angular app)
-RUN npm run build
+# Skip build step since it's not needed for this app
 
-# Use the official Nginx image to serve the app
-FROM nginx:latest
+# Use the official Node.js image to run the app
+FROM node:16
 
-# Copy the built app from the previous build stage to Nginx's default directory
-COPY --from=build /app/portfolio/build /usr/share/nginx/html
+# Set working directory
+WORKDIR /app/portfolio/
 
-# Expose port 80 for Nginx
-EXPOSE 80
+# Copy the app files from the build stage
+COPY --from=build /app/portfolio/ /app/portfolio/
 
-# Start Nginx in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+# Expose port 7000 (or whichever port your app runs on)
+EXPOSE 7000
+
+# Start the app (adjust based on your entry point)
+CMD ["node", "resume.js"]
+
 
