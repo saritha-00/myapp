@@ -1,0 +1,17 @@
+FROM node:20-alpine
+
+COPY package.json /app/portfolio/
+COPY home.js /app/portfolio/
+
+WORKDIR /app/portfolio/
+
+RUN npm install
+
+<<<<<<< HEAD:resume/dockerfile.txt
+ENTRYPOINT ["node", "resume.js"]
+=======
+# Start Nginx when the container runs
+# starts Nginx in the foreground
+ENTRYPOINT ["nginx", "home.js"]
+
+>>>>>>> c3fa683 (Initial commit for webapp):resume/dockerfile
