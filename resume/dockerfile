@@ -23,7 +23,7 @@ WORKDIR /app/portfolio/
 COPY --from=build /app/portfolio/ /app/portfolio/
 
 # Expose port 7000 (or whichever port your app runs on)
-EXPOSE 7000
+#EXPOSE 7000
 
 # Start the app (adjust based on your entry point)
 CMD ["node", "resume.js"]
